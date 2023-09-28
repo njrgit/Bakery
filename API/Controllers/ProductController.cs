@@ -9,10 +9,10 @@ using Persistence;
 
 namespace API.Controllers
 {
-    public class ProductController : BaseApiController
+    public class ProductsController : BaseApiController
     {
         private readonly DataContext dataContext;
-        public ProductController(DataContext dataContext)
+        public ProductsController(DataContext dataContext)
         {
             this.dataContext = dataContext;
         }
