@@ -1,32 +1,45 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Application.Commands;
+using Application.Queries;
 using Domain;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Persistence;
 
 namespace API.Controllers
 {
     public class ProductsController : BaseApiController
     {
-        private readonly DataContext dataContext;
-        public ProductsController(DataContext dataContext)
-        {
-            this.dataContext = dataContext;
-        }
-
         [HttpGet]
         public async Task<ActionResult<List<Product>>> GetProducts()
         {
-            return await dataContext.Products.ToListAsync();
+            return await Mediator.Send(new ProductsQuery());
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<Product>> GetProducts(Guid id)
         {
-            return await dataContext.Products.FindAsync(id);
+            return await Mediator.Send(new SingleProductQuery { Id = id });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateProduct(Product product)
+        {
+            await Mediator.Send(new CreateProductCommand { Product = product });
+
+            return Ok();
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateProduct(Guid id, Product product)
+        {
+            product.Id = id;
+            await Mediator.Send(new EditSingleProductCommand { Product =product});
+            return Ok();
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteProduct(Guid id)
+        {
+            await Mediator.Send(new DeleteProductCommand { Id = id});
+            return Ok();
         }
     }
 }
