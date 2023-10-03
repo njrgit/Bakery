@@ -399,3 +399,5 @@ FodyWeavers.xsd
 /API/appsettings.json
 /API/bakery.db
 /API/bakery.db
+/API/bakery.db-shm
+/API/bakery.db-wal
