@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
 import { Container } from "semantic-ui-react";
 import { Product } from "../models/product";
 import MenuBar from "./MenuBar";
 import ProductMenu from "../../features/product/menu/ProductMenu";
 import { v4 as uuidv4 } from "uuid";
+import httpClient from "../api/httpclient";
+import LoadingComponent from "./LoadingComponent";
 
 function App() {
   const [products, setProducts] = useState<Product[]>([]);
@@ -12,18 +13,23 @@ function App() {
     undefined
   );
   const [editMode, setEditMode] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [sumitting, setSubmitting] = useState(false);
 
   //Empty array will only run once in the dependencies
   useEffect(() => {
-    axios
-      .get<Product[]>("http://localhost:5000/api/products")
-      .then((response) => {
-        setProducts(response.data);
-      });
+    httpClient.Products.list().then((response) => {
+      setProducts(response);
+      setLoading(false);
+    });
   }, []);
 
   function handleDeleteProduct(id: string) {
-    setProducts(products.filter((x) => x.id !== id));
+    setSubmitting(true);
+    httpClient.Products.delete(id).then(() => {
+      setProducts(products.filter((x) => x.id !== id));
+      setSubmitting(false);
+    });
   }
 
   function handleSelectProduct(id: string) {
@@ -44,12 +50,28 @@ function App() {
   }
 
   function handleEditProduct(product: Product) {
-    product.id
-      ? setProducts([...products.filter((x) => x.id !== product.id), product])
-      : setProducts([...products, {...product, id: uuidv4()}]);
-    setEditMode(false);
-    setSelectedProduct(product);
+    setSubmitting(true);
+    if (product.id) {
+      httpClient.Products.update(product).then(() => {
+        setProducts([...products.filter((x) => x.id !== product.id), product]);
+        setEditMode(false);
+        setSelectedProduct(product);
+        setSubmitting(false);
+      });
+    } else {
+      product.id = uuidv4();
+      httpClient.Products.create(product).then(() => {
+        setProducts([...products, product]);
+        setEditMode(false);
+        setSelectedProduct(product);
+        setSubmitting(false);
+      });
+    }
   }
+
+  if (loading) return <LoadingComponent content="Baking..." />;
+
+  if (sumitting) return <LoadingComponent content="Updating...." />;
 
   return (
     <>
