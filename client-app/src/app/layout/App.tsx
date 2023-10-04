@@ -4,6 +4,7 @@ import { Container } from "semantic-ui-react";
 import { Product } from "../models/product";
 import MenuBar from "./MenuBar";
 import ProductMenu from "../../features/product/menu/ProductMenu";
+import { v4 as uuidv4 } from "uuid";
 
 function App() {
   const [products, setProducts] = useState<Product[]>([]);
@@ -45,7 +46,7 @@ function App() {
   function handleEditProduct(product: Product) {
     product.id
       ? setProducts([...products.filter((x) => x.id !== product.id), product])
-      : setProducts([...products, product]);
+      : setProducts([...products, {...product, id: uuidv4()}]);
     setEditMode(false);
     setSelectedProduct(product);
   }
