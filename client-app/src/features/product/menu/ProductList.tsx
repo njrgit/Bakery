@@ -1,23 +1,16 @@
-import { Product } from "../../../app/models/product";
 import { Button, ButtonGroup, Icon, Item, ItemGroup } from "semantic-ui-react";
 import "../../../app/layout/styles.css";
+import { useStore } from "../../../app/stores/store";
+import { observer } from "mobx-react-lite";
 
-interface Props {
-  products: Product[];
-  selectProduct: (id: string) => void;
-  formOpen: (id: string) => void;
-  deleteProduct: (id: string) => void;
-}
+export default observer(function ProductList() {
+  const { productStore } = useStore();
+  const { openForm, deleteProduct, getProductsInAlphabeticalOrder } =
+    productStore;
 
-export default function ProductList({
-  products,
-  selectProduct,
-  formOpen,
-  deleteProduct,
-}: Props) {
   return (
     <ItemGroup>
-      {products.map((product) => (
+      {getProductsInAlphabeticalOrder.map((product) => (
         <Item key={product.id}>
           <Item.Image
             size="small"
@@ -44,9 +37,7 @@ export default function ProductList({
                 </Button>
                 <Button
                   onClick={() => {
-                    selectProduct(product.id);
-                    formOpen(product.id);
-                    console.log(product);
+                    openForm(product.id);
                   }}
                   primary
                 >
@@ -55,7 +46,6 @@ export default function ProductList({
                 </Button>
                 <Button
                   color="red"
-                  
                   onClick={() => {
                     deleteProduct(product.id);
                   }}
@@ -69,4 +59,4 @@ export default function ProductList({
       ))}
     </ItemGroup>
   );
-}
+});

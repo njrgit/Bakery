@@ -1,33 +1,18 @@
 import { Button, Container, Grid, Icon } from "semantic-ui-react";
-import { Product } from "../../../app/models/product";
 import ProductList from "./ProductList";
 import ProductForm from "../form/ProductForm";
+import { useStore } from "../../../app/stores/store";
+import { observer } from "mobx-react-lite";
 
-interface Props {
-  products: Product[];
-  selectedProduct: Product | undefined;
-  selectProduct: (id: string) => void;
-  editMode: boolean;
-  formOpen: (id?: string) => void;
-  formClose: () => void;
-  editProduct: (product: Product) => void;
-  deleteProduct: (id: string) => void;
-}
+export default observer(function ProductMenu()
+{
+  const { productStore } = useStore();
+  const { editMode, openForm} = productStore;
 
-export default function ProductMenu({
-  products,
-  selectedProduct,
-  selectProduct,
-  editMode,
-  formOpen,
-  formClose,
-  editProduct,
-  deleteProduct,
-}: Props) {
   return (
     <>
       <Container style={{ marginBottom: "2em" }}>
-        <Button onClick={() => formOpen()} color="blue" animated="vertical">
+        <Button onClick={() => openForm()} color="blue" animated="vertical">
           <Button.Content hidden>Add</Button.Content>
           <Button.Content visible>
             <Icon name="add" />
@@ -36,20 +21,9 @@ export default function ProductMenu({
       </Container>
 
       <Grid columns={2}>
-        <ProductList
-          products={products}
-          selectProduct={selectProduct}
-          formOpen={formOpen}
-          deleteProduct={deleteProduct}
-        />
-        {editMode && (
-          <ProductForm
-            selectedProduct={selectedProduct}
-            formClose={formClose}
-            editProduct={editProduct}
-          />
-        )}
+        <ProductList />
+        {editMode && <ProductForm />}
       </Grid>
     </>
   );
-}
+})
