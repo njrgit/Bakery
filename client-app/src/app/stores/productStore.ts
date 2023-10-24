@@ -36,6 +36,33 @@ export default class ProductStore
         }
     }
 
+    loadProduct = async (id: string) =>
+    {
+        let productToReturn = this.products.find(p => p.id === id);
+
+        if (productToReturn)
+        {
+            this.setSelectedProductUsingProduct(productToReturn);
+            console.log(`Product set in store ${productToReturn.id}`)
+            return productToReturn;
+        } else
+        {
+            this.setLoading(true);
+
+            try
+            {
+                productToReturn = await httpClient.Products.getProduct(id);
+                this.setSelectedProductUsingProduct(productToReturn);
+                this.setLoading(false);
+                return productToReturn;
+            } catch (error)
+            {
+                console.log(error)
+            }
+
+        }
+    }
+
     setProducts = (productsFromApi: Product[]) =>
     {
         this.products = productsFromApi;
@@ -55,6 +82,12 @@ export default class ProductStore
     {
         this.selectedProduct = this.products.find(x => x.id === id);
     }
+
+    setSelectedProductUsingProduct = (product: Product) =>
+    {
+        this.selectedProduct = product;
+    }
+
 
     cancelSelectedProduct = () =>
     {

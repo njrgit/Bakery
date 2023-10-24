@@ -1,13 +1,22 @@
 import { Button, Form, Segment } from "semantic-ui-react";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { useStore } from "../../../app/stores/store";
 import { observer } from "mobx-react-lite";
+import { useParams } from "react-router-dom";
 
 export default observer(function ProductForm() {
   const { productStore } = useStore();
-  const { closeForm, selectedProduct,createProduct,updateProduct } = productStore;
+  const {
+    closeForm,
+    selectedProduct,
+    createProduct,
+    updateProduct,
+    loadProduct,
+  } = productStore;
 
-  const initialProductState = selectedProduct ?? {
+  const { id } = useParams();
+
+  const initialProductState = {
     id: "",
     name: "",
     description: "",
@@ -17,19 +26,25 @@ export default observer(function ProductForm() {
 
   const [product, setProduct] = useState(initialProductState);
 
+  useEffect(() => {
+    if (id)
+    {
+      loadProduct(id).then((productFromStore) =>{setProduct(productFromStore!);})
+      console.log(`useEffect - current product id ${selectedProduct?.id}`);
+    }
+  }, [id, loadProduct]);
+
   function handleInputChange(event: ChangeEvent<HTMLInputElement>) {
     const { name, value } = event.target;
     setProduct({ ...product, [name]: value });
   }
 
-  function handleSubmit()
-  {
+  function handleSubmit() {
     product.id ? updateProduct(product) : createProduct(product);
   }
 
   return (
     <Segment>
-      (
       <Form onSubmit={handleSubmit}>
         <Form.Field>
           <label>Name</label>
@@ -74,7 +89,6 @@ export default observer(function ProductForm() {
           Cancel
         </Button>
       </Form>
-      )
     </Segment>
-  );
-})
+  )
+});

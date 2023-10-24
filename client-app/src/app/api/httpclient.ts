@@ -30,9 +30,10 @@ const requests = {
 
 const Products = {
     list: () => requests.get<Product[]>("/products"),
-    create: (product : Product) => axios.post<void>(`/products`, product),
-    update: (product : Product) => axios.put<void>(`/products/${product.id}`, product),
-    delete: (id: string) => axios.delete<void>(`/products/${id}`)
+    create: (product : Product) => requests.post<void>(`/products`, product),
+    update: (product : Product) => requests.put<void>(`/products/${product.id}`, product),
+    delete: (id: string) => requests.delete<void>(`/products/${id}`),
+    getProduct : (id:string) => requests.get<Product>(`products/${id}`)
 }
 
 const httpClient = {

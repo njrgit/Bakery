@@ -2,11 +2,21 @@ import { Button, ButtonGroup, Icon, Item, ItemGroup } from "semantic-ui-react";
 import "../../../app/layout/styles.css";
 import { useStore } from "../../../app/stores/store";
 import { observer } from "mobx-react-lite";
+import { useEffect } from "react";
+import LoadingComponent from "../../../app/layout/LoadingComponent";
+import { Link } from "react-router-dom";
 
 export default observer(function ProductList() {
   const { productStore } = useStore();
-  const { openForm, deleteProduct, getProductsInAlphabeticalOrder } =
+  const { deleteProduct, getProductsInAlphabeticalOrder } =
     productStore;
+
+  //Empty array will only run once in the dependencies
+  useEffect(() => {
+    productStore.loadProducts();
+  }, [productStore]);
+
+  if (productStore.loading) return <LoadingComponent content="Baking..." />;
 
   return (
     <ItemGroup>
@@ -36,9 +46,8 @@ export default observer(function ProductList() {
                   <Icon name="chevron circle right" />
                 </Button>
                 <Button
-                  onClick={() => {
-                    openForm(product.id);
-                  }}
+                  as={Link}
+                  to={`/products/${product.id}`}
                   primary
                 >
                   Edit
