@@ -2,9 +2,12 @@ import { Button, Form, Segment } from "semantic-ui-react";
 import { ChangeEvent, useEffect, useState } from "react";
 import { useStore } from "../../../app/stores/store";
 import { observer } from "mobx-react-lite";
-import { useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 
-export default observer(function ProductForm() {
+export default observer(function ProductForm()
+{
+  const nav = useNavigate();
+
   const { productStore } = useStore();
   const {
     closeForm,
@@ -12,6 +15,7 @@ export default observer(function ProductForm() {
     createProduct,
     updateProduct,
     loadProduct,
+    loading
   } = productStore;
 
   const { id } = useParams();
@@ -40,7 +44,9 @@ export default observer(function ProductForm() {
   }
 
   function handleSubmit() {
-    product.id ? updateProduct(product) : createProduct(product);
+    product.id
+      ? updateProduct(product).then(() => nav("/veg"))
+      : createProduct(product).then(() => nav("/veg"));
   }
 
   return (
@@ -82,13 +88,19 @@ export default observer(function ProductForm() {
             onChange={handleInputChange}
           />
         </Form.Field>
-        <Button type="submit" positive floated="right">
+        <Button type="submit" loading={loading} positive floated="right">
           Submit
         </Button>
-        <Button onClick={() => closeForm()} type="button" floated="right">
+        <Button
+          onClick={() => closeForm()}
+          as={Link}
+          to={"/veg"} 
+          type="button"
+          floated="right"
+        >
           Cancel
         </Button>
       </Form>
     </Segment>
-  )
+  );
 });

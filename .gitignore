@@ -401,3 +401,4 @@ FodyWeavers.xsd
 /API/bakery.db
 /API/bakery.db-shm
 /API/bakery.db-wal
+/API/bakery.db
