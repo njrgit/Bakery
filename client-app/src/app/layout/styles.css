@@ -1,8 +1,13 @@
-body{
-    background-color: #233349;
-    color: whitesmoke;
+body {
+  background-color: #233349;
+  color: whitesmoke;
+  /* background-image: url("Savoury.jpg"); */
 }
 
-.prouctItemHeader{
-    color: whitesmoke !important;
+.prouctItemHeader {
+  color: whitesmoke !important;
+}
+
+.menuHeader{
+    background-color: #C4A484 !important;
 }
