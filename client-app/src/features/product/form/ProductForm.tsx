@@ -3,6 +3,7 @@ import { ChangeEvent, useEffect, useState } from "react";
 import { useStore } from "../../../app/stores/store";
 import { observer } from "mobx-react-lite";
 import { Link, useNavigate, useParams } from "react-router-dom";
+import "../../../app/layout/styles.css"
 
 export default observer(function ProductForm() {
   const nav = useNavigate();
@@ -51,7 +52,7 @@ export default observer(function ProductForm() {
   }
 
   return (
-    <Segment clearing>
+    <Segment className="form" clearing>
       <Form className="ui form" onSubmit={handleSubmit}>
         <Form.Field>
           <label>Name</label>

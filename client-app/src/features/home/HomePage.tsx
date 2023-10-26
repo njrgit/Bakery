@@ -7,7 +7,7 @@ export default function HomePage() {
     <Container
       textAlign="center"
       style={{
-        paddingTop:"10%"
+        paddingTop: "10%",
       }}
     >
       <Header
@@ -23,7 +23,7 @@ export default function HomePage() {
           Spice in the right place
         </Header.Subheader>
         <Button
-          style={{ marginTop: "10%" }}
+          style={{ marginTop: "10%", backgroundColor: "#c6ad8f" }}
           as={Link}
           to={"/veg"}
           primary
