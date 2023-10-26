@@ -9,6 +9,7 @@ export default class ProductStore
     editMode: boolean = false;
     loading: boolean = false;
     selectedProduct: Product | undefined = undefined;
+    submitLoading: boolean = false;
 
     constructor()
     {
@@ -39,7 +40,7 @@ export default class ProductStore
     loadProduct = async (id: string) =>
     {
         let productToReturn = this.products.find(p => p.id === id);
-
+        
         if (productToReturn)
         {
             this.setSelectedProductUsingProduct(productToReturn);
@@ -104,7 +105,7 @@ export default class ProductStore
 
     createProduct = async (product: Product) =>
     {
-        this.setLoading(true);
+        this.setSubmitLoading(true);
         product.id = uuidv4();
 
         try
@@ -115,20 +116,20 @@ export default class ProductStore
                 this.products.push(product);
                 this.setSelectedProduct(product.id);
                 this.setEditMode(false);
-                this.setLoading(false);
+                this.setSubmitLoading(false);
             });
 
         } catch (error)
         {
             console.log("Error Fired")
             console.log(error);
-            this.setLoading(false);
+            this.setSubmitLoading(false);
         }
     }
 
     updateProduct = async (product: Product) =>
     {
-        this.setLoading(true);
+        this.setSubmitLoading(true);
         try
         {
             await httpClient.Products.update(product);
@@ -138,15 +139,20 @@ export default class ProductStore
                 this.products.push(product);
                 this.setSelectedProduct(product.id);
                 this.setEditMode(false);
-                this.setLoading(false);
+                this.setSubmitLoading(false);
             });
 
         } catch (error)
         {
             console.log("Error Fired")
             console.log(error);
-            this.setLoading(false);
+            this.setSubmitLoading(false);
         }
+    }
+
+    private setSubmitLoading = (submitting: boolean) =>
+    {
+        this.submitLoading = submitting;
     }
 
     deleteProduct = async (id: string) =>

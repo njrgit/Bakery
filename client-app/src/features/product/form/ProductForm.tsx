@@ -1,11 +1,10 @@
-import { Button, Form, Segment } from "semantic-ui-react";
+import { Button, Container, Form, Segment } from "semantic-ui-react";
 import { ChangeEvent, useEffect, useState } from "react";
 import { useStore } from "../../../app/stores/store";
 import { observer } from "mobx-react-lite";
 import { Link, useNavigate, useParams } from "react-router-dom";
 
-export default observer(function ProductForm()
-{
+export default observer(function ProductForm() {
   const nav = useNavigate();
 
   const { productStore } = useStore();
@@ -15,7 +14,8 @@ export default observer(function ProductForm()
     createProduct,
     updateProduct,
     loadProduct,
-    loading
+    loading,
+    submitLoading
   } = productStore;
 
   const { id } = useParams();
@@ -31,9 +31,10 @@ export default observer(function ProductForm()
   const [product, setProduct] = useState(initialProductState);
 
   useEffect(() => {
-    if (id)
-    {
-      loadProduct(id).then((productFromStore) =>{setProduct(productFromStore!);})
+    if (id) {
+      loadProduct(id).then((productFromStore) => {
+        setProduct(productFromStore!);
+      });
       console.log(`useEffect - current product id ${selectedProduct?.id}`);
     }
   }, [id, loadProduct]);
@@ -50,8 +51,8 @@ export default observer(function ProductForm()
   }
 
   return (
-    <Segment>
-      <Form onSubmit={handleSubmit}>
+    <Segment clearing>
+      <Form className="ui form" onSubmit={handleSubmit}>
         <Form.Field>
           <label>Name</label>
           <input
@@ -88,18 +89,23 @@ export default observer(function ProductForm()
             onChange={handleInputChange}
           />
         </Form.Field>
-        <Button type="submit" loading={loading} positive floated="right">
-          Submit
-        </Button>
-        <Button
-          onClick={() => closeForm()}
-          as={Link}
-          to={"/veg"} 
+          <Button
+            type="submit"
+            loading={submitLoading}
+          positive
+          floated="right"
+          >
+            Submit
+          </Button>
+          <Button
+            onClick={() => closeForm()}
+            as={Link}
+            to={"/veg"}
           type="button"
           floated="right"
-        >
-          Cancel
-        </Button>
+          >
+            Cancel
+          </Button>
       </Form>
     </Segment>
   );
