@@ -1,4 +1,4 @@
-import { Button, Container, Form, Segment } from "semantic-ui-react";
+import { Button, Form, Segment } from "semantic-ui-react";
 import { ChangeEvent, useEffect, useState } from "react";
 import { useStore } from "../../../app/stores/store";
 import { observer } from "mobx-react-lite";
@@ -15,7 +15,6 @@ export default observer(function ProductForm() {
     createProduct,
     updateProduct,
     loadProduct,
-    loading,
     submitLoading
   } = productStore;
 
@@ -52,11 +51,12 @@ export default observer(function ProductForm() {
   }
 
   return (
-    <Segment className="form" clearing>
-      <Form className="ui form" onSubmit={handleSubmit}>
+    <Segment className="uiForm" clearing>
+      <Form className="uiForm" onSubmit={handleSubmit}>
         <Form.Field>
-          <label>Name</label>
+          <label className="formLabel">Name</label>
           <input
+            className="uiForm"
             name="name"
             placeholder="Name"
             value={product.name}
@@ -64,49 +64,47 @@ export default observer(function ProductForm() {
           />
         </Form.Field>
         <Form.Field>
-          <label>Description</label>
+          <label className="formLabel">Description</label>
           <input
             name="description"
+            className="uiForm"
             placeholder="Description"
             value={product.description}
             onChange={handleInputChange}
           />
         </Form.Field>
         <Form.Field>
-          <label>Category</label>
+          <label className="formLabel">Category</label>
           <input
             name="category"
+            className="uiForm"
             placeholder="Category"
             value={product.category}
             onChange={handleInputChange}
           />
         </Form.Field>
         <Form.Field>
-          <label>Price</label>
+          <label className="formLabel">Price</label>
           <input
             name="price"
+            className="uiForm"
             placeholder="Price"
             value={product.price}
             onChange={handleInputChange}
           />
         </Form.Field>
-          <Button
-            type="submit"
-            loading={submitLoading}
-          positive
-          floated="right"
-          >
-            Submit
-          </Button>
-          <Button
-            onClick={() => closeForm()}
-            as={Link}
-            to={"/veg"}
+        <Button type="submit" loading={submitLoading} positive floated="right">
+          Submit
+        </Button>
+        <Button
+          onClick={() => closeForm()}
+          as={Link}
+          to={"/veg"}
           type="button"
           floated="right"
-          >
-            Cancel
-          </Button>
+        >
+          Cancel
+        </Button>
       </Form>
     </Segment>
   );

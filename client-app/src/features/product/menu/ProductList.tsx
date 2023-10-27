@@ -24,7 +24,7 @@ export default observer(function ProductList() {
         <Item key={product.id}>
           <Item.Image
             size="small"
-            src={`/public/foodImages/${product.category}.jpg`}
+            src={`/public/foodImages/Savoury.jpg`}
           />
           <Item.Content verticalAlign="middle">
             <Item.Header className="prouctItemHeader">
@@ -41,11 +41,12 @@ export default observer(function ProductList() {
             </Item.Description>
             <Item.Extra>
               <ButtonGroup>
-                <Button primary>
+                <Button className="uiForm" primary>
                   Order
                   <Icon name="chevron circle right" />
                 </Button>
                 <Button
+                  className="uiForm"
                   as={Link}
                   to={`/products/${product.id}`}
                   primary

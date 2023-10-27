@@ -1,4 +1,4 @@
-import { Button, Container, Grid, Icon } from "semantic-ui-react";
+import { Button, Container, Icon } from "semantic-ui-react";
 import ProductList from "./ProductList";
 import ProductForm from "../form/ProductForm";
 import { useStore } from "../../../app/stores/store";
@@ -14,6 +14,7 @@ export default observer(function ProductMenu() {
       <Container style={{ marginBottom: "2em" }}>
         <Button
           as={NavLink}
+          className="uiForm"
           to="/create"
           onClick={() => openForm()}
           color="blue"

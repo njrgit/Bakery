@@ -8,6 +8,15 @@ body {
   color: whitesmoke !important;
 }
 
-.menuHeader{
-    background-color: #c6ad8f !important;
+.menuHeader {
+  background-color: #c6ad8f !important;
+}
+
+.uiForm {
+  background-color: #c6ad8f !important;
+  color: white !important;
+}
+
+.formLabel {
+  color: #425664 !important;
 }
